@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FavoritesContext } from '../context/FavoritesContext';
 import ResourceCard from '../components/ResourceCard';
+import VideoCard from '../components/VideoCard';
+import RepoCard from '../components/RepoCard';
 import { Heart } from 'lucide-react';
 
 const Favorites = () => {
@@ -16,9 +18,15 @@ const Favorites = () => {
 
       {favorites.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {favorites.map(resource => (
-            <ResourceCard key={resource.id} resource={resource} />
-          ))}
+          {favorites.map(resource => {
+            if (resource.type === 'youtube') {
+              return <VideoCard key={resource.id} video={resource} />;
+            }
+            if (resource.type === 'github') {
+              return <RepoCard key={resource.id} repo={resource} />;
+            }
+            return <ResourceCard key={resource.id} resource={resource} />;
+          })}
         </div>
       ) : (
         <div className="text-center py-20 glass-card">
