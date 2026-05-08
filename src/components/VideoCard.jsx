@@ -90,7 +90,7 @@ const VideoCard = ({ video }) => {
           rel="noopener noreferrer"
           className="mt-4 flex items-center justify-center w-full bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 text-sm font-semibold py-2.5 rounded-xl transition-colors shadow-sm"
         >
-          Watch Video <ExternalLink className="w-4 h-4 ml-1.5" />
+          Watch Videos <ExternalLink className="w-4 h-4 ml-1.5" />
         </a>
       </div>
     </div>
