@@ -1,45 +1,42 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { BookOpen, Heart } from 'lucide-react';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Heart, Sparkles } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
-import { FavoritesContext } from '../context/FavoritesContext';
 
 const Navbar = () => {
-  const { favorites } = useContext(FavoritesContext);
+  const location = useLocation();
+  const isFavoritesPage = location.pathname === '/favorites';
 
   return (
-    <nav className="glass-nav">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="bg-primary/10 p-2 rounded-xl group-hover:bg-primary/20 transition-colors">
-                <BookOpen className="h-6 w-6 text-primary" />
-              </div>
-              <span className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">
-                Learn<span className="text-primary">Hub</span>
-              </span>
-            </Link>
+    <nav className="glass-nav py-4 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        
+        {/* Logo and Branding */}
+        <Link to="/" className="flex items-center gap-2.5 group">
+          <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-xl shadow-md group-hover:shadow-lg transition-all duration-300 transform group-hover:scale-105">
+            <Sparkles className="w-6 h-6 text-white" />
           </div>
+          <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            LearnHub <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">AI</span>
+          </span>
+        </Link>
+
+        {/* Navigation Links and Actions */}
+        <div className="flex items-center gap-3 sm:gap-5">
+          <Link 
+            to="/favorites" 
+            className={`btn-icon flex items-center gap-2 ${isFavoritesPage ? 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400' : 'text-slate-600 hover:text-red-600 dark:text-slate-300 dark:hover:text-red-400'}`}
+            title="Favorites"
+          >
+            <Heart className={`w-5 h-5 ${isFavoritesPage ? 'fill-red-500' : ''}`} />
+            <span className="hidden sm:inline font-semibold text-sm">Favorites</span>
+          </Link>
           
-          <div className="flex items-center gap-2 sm:gap-4">
-            <DarkModeToggle />
-            <Link
-              to="/favorites"
-              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-700 dark:text-slate-200"
-            >
-              <div className="relative">
-                <Heart className="h-5 w-5" />
-                {favorites.length > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-                    {favorites.length}
-                  </span>
-                )}
-              </div>
-              <span className="hidden sm:inline font-medium text-sm">Favorites</span>
-            </Link>
-          </div>
+          <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 hidden sm:block"></div>
+          
+          <DarkModeToggle />
         </div>
+
       </div>
     </nav>
   );

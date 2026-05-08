@@ -58,19 +58,29 @@ export const searchYouTubeVideos = async (query) => {
     const statsData = await statsRes.json();
     
     // Step 3: Map and combine the data into a clean structure
-    return statsData.items.map(video => ({
-      id: `yt-${video.id}`,
-      originalId: video.id,
-      type: 'youtube', // explicitly mark as youtube
-      title: video.snippet.title,
-      description: video.snippet.description,
-      channelName: video.snippet.channelTitle,
-      publishDate: video.snippet.publishedAt,
-      views: formatViews(video.statistics.viewCount),
-      url: `https://www.youtube.com/watch?v=${video.id}`,
-      image: video.snippet.thumbnails?.high?.url || video.snippet.thumbnails?.medium?.url,
-      category: 'YouTube Video' // maintain compatibility with existing FilterBar
-    }));
+    return statsData.items.map(video => {
+      // Determine difficulty deterministically based on video ID length or chars
+      const levels = ['Beginner', 'Intermediate', 'Advanced'];
+      // A simple deterministic hash based on video.id
+      const hash = video.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      const assignedLevel = levels[hash % 3];
+
+      return {
+        id: `yt-${video.id}`,
+        originalId: video.id,
+        type: 'youtube', // explicitly mark as youtube
+        title: video.snippet.title,
+        description: video.snippet.description,
+        channelName: video.snippet.channelTitle,
+        publishDate: video.snippet.publishedAt,
+        views: formatViews(video.statistics.viewCount),
+        rawViews: parseInt(video.statistics.viewCount, 10) || 0, // Keeping raw number for sorting
+        url: `https://www.youtube.com/watch?v=${video.id}`,
+        image: video.snippet.thumbnails?.high?.url || video.snippet.thumbnails?.medium?.url,
+        category: 'YouTube Video', // maintain compatibility with existing FilterBar
+        level: assignedLevel // new property for filtering
+      };
+    });
     
   } catch (error) {
     console.error("Failed to fetch YouTube videos:", error);

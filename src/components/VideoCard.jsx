@@ -1,13 +1,7 @@
 import React, { useContext } from 'react';
-import { PlayCircle, Eye, Calendar, Heart, ExternalLink } from 'lucide-react';
+import { Heart, Play, MonitorPlay, Calendar, Eye, ExternalLink } from 'lucide-react';
 import { FavoritesContext } from '../context/FavoritesContext';
 
-/**
- * VideoCard Component
- * Displays a responsive, glassmorphism-styled card tailored for video content.
- * 
- * @param {Object} video - The video data object
- */
 const VideoCard = ({ video }) => {
   const { isFavorite, addFavorite, removeFavorite } = useContext(FavoritesContext);
   const favorite = isFavorite(video.id);
@@ -21,82 +15,83 @@ const VideoCard = ({ video }) => {
     }
   };
 
-  const formattedDate = new Date(video.publishDate).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  });
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
 
   return (
-    <div className="glass-card flex flex-col h-full overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+    <div className="glass-card flex flex-col h-full overflow-hidden group">
       
       {/* Thumbnail Section */}
-      <div className="relative h-48 w-full overflow-hidden bg-slate-900 group cursor-pointer" onClick={() => window.open(video.url, '_blank')}>
-        {video.image ? (
-          <img
-            src={video.image}
-            alt={video.title}
-            className="w-full h-full object-cover opacity-90 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-500 bg-slate-800">
-            No Thumbnail
-          </div>
-        )}
+      <div className="relative h-48 overflow-hidden bg-slate-900">
+        <img 
+          src={video.image} 
+          alt={video.title} 
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out opacity-90 group-hover:opacity-100"
+        />
         
-        {/* Play overlay icon */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <PlayCircle className="w-12 h-12 text-white opacity-0 group-hover:opacity-90 transition-opacity duration-300 drop-shadow-lg" />
+        {/* Play Button Overlay */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/20">
+          <div className="w-14 h-14 bg-red-600/90 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(220,38,38,0.5)] transform scale-75 group-hover:scale-100 transition-all duration-500 delay-100">
+            <Play className="w-6 h-6 text-white ml-1 fill-white" />
+          </div>
         </div>
 
-        {/* Favorite Button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation(); // prevent triggering the video link
-            toggleFavorite(e);
-          }}
-          className="absolute top-3 right-3 p-2 rounded-full bg-black/40 backdrop-blur-md hover:bg-black/60 transition-colors shadow-sm"
-          aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
-        >
-          <Heart
-            className={`w-5 h-5 ${favorite ? 'fill-red-500 text-red-500' : 'text-white'}`}
-          />
-        </button>
+        <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
+          <button
+            onClick={toggleFavorite}
+            className="p-2.5 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-full hover:bg-white dark:hover:bg-slate-800 transition-colors shadow-lg"
+            aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
+          >
+            <Heart className={`w-5 h-5 ${favorite ? 'fill-red-500 text-red-500' : 'text-slate-600 dark:text-slate-300'}`} />
+          </button>
+        </div>
+        
+        <div className="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold text-white shadow-sm border border-white/10 flex items-center gap-1.5">
+          <MonitorPlay className="w-3.5 h-3.5 text-red-500" /> YouTube
+        </div>
       </div>
       
       {/* Content Section */}
-      <div className="p-5 flex flex-col flex-grow">
-        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1 line-clamp-2 leading-tight">
+      <div className="p-6 flex flex-col flex-grow">
+        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300" title={video.title}>
           {video.title}
         </h3>
         
-        <p className="text-sm font-medium text-primary mb-3">
-          {video.channelName}
-        </p>
-
-        {/* Video Statistics */}
-        <div className="flex items-center gap-4 text-xs font-medium text-slate-500 dark:text-slate-400 mb-4 mt-auto">
+        <div className="flex items-center gap-2 mb-4 text-sm font-medium text-slate-700 dark:text-slate-300">
+          <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center flex-shrink-0">
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+              {video.channelName.charAt(0).toUpperCase()}
+            </span>
+          </div>
+          <p className="truncate" title={video.channelName}>{video.channelName}</p>
+        </div>
+        
+        {/* Video Stats */}
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold text-slate-500 dark:text-slate-400">
           <div className="flex items-center gap-1.5">
-            <Eye className="w-4 h-4" />
+            <Eye className="w-4 h-4 text-slate-400" />
             <span>{video.views}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Calendar className="w-4 h-4" />
-            <span>{formattedDate}</span>
+            <Calendar className="w-4 h-4 text-slate-400" />
+            <span>{formatDate(video.publishDate)}</span>
           </div>
         </div>
 
         {/* Action Link */}
-        <div className="pt-3 mt-auto border-t border-slate-200 dark:border-slate-700/50">
-          <a
-            href={video.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-2 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 font-medium rounded-lg transition-colors text-sm"
-          >
-            <PlayCircle className="w-4 h-4" /> Watch on YouTube
-          </a>
-        </div>
+        <a 
+          href={video.url} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="mt-4 flex items-center justify-center w-full bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 text-sm font-semibold py-2.5 rounded-xl transition-colors shadow-sm"
+        >
+          Watch Video <ExternalLink className="w-4 h-4 ml-1.5" />
+        </a>
       </div>
     </div>
   );

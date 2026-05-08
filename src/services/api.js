@@ -10,7 +10,11 @@ export const defaultResources = [
     category: 'Development',
     url: 'https://react.dev',
     image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&auto=format&fit=crop',
-    type: 'article'
+    type: 'article',
+    level: 'Beginner',
+    rawViews: 1000,
+    rawStars: 500,
+    publishDate: new Date('2023-01-01').toISOString()
   },
   {
     id: 'default-2',
@@ -19,7 +23,11 @@ export const defaultResources = [
     category: 'Design',
     url: 'https://tailwindcss.com',
     image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=800&auto=format&fit=crop',
-    type: 'article'
+    type: 'article',
+    level: 'Advanced',
+    rawViews: 800,
+    rawStars: 1500,
+    publishDate: new Date('2023-06-15').toISOString()
   }
 ];
 
