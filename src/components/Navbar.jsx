@@ -18,7 +18,7 @@ const Navbar = () => {
             <Sparkles className="w-6 h-6 text-white" />
           </div>
           <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            LearnHub <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">AI</span>
+            LearnHub
           </span>
         </div>
 

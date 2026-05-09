@@ -94,7 +94,7 @@ const Home = () => {
       <div className="text-center mb-16 animate-in slide-in-from-bottom-4 duration-700 fade-in">
         <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 dark:text-white mb-6 tracking-tight">
           Welcome to <br className="hidden md:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600">LearnHub AI</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600">LearnHub</span>
         </h1>
         <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
           Your guided learning platform. Choose a predefined roadmap to master a skill, or search for specific resources instantly.

@@ -5,9 +5,10 @@ import { searchResources } from '../services/api';
 import { ProgressContext } from '../context/ProgressContext';
 import VideoCard from '../components/VideoCard';
 import RepoCard from '../components/RepoCard';
+import GFGCard from '../components/GFGCard';
 import Loader from '../components/Loader';
 import NotesSection from '../components/NotesSection';
-import { ArrowLeft, CheckCircle, Circle, MonitorPlay, GitBranch } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Circle, MonitorPlay, GitBranch, BookOpen } from 'lucide-react';
 
 const StepDetails = () => {
   const { roadmapId, stepId } = useParams();
@@ -132,6 +133,21 @@ const StepDetails = () => {
                   <p className="text-slate-500">No repositories found for this topic.</p>
                 )}
               </section>
+
+              {/* GeeksForGeeks Section */}
+              {step.gfgLinks && step.gfgLinks.length > 0 && (
+                <section>
+                  <div className="flex items-center gap-2 mb-6">
+                    <BookOpen className="w-6 h-6 text-[#2F8D46]" />
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Read on GFG 📗</h2>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {step.gfgLinks.map((article, idx) => (
+                      <GFGCard key={idx} article={article} />
+                    ))}
+                  </div>
+                </section>
+              )}
             </>
           )}
 
@@ -150,3 +166,4 @@ const StepDetails = () => {
 };
 
 export default StepDetails;
+
